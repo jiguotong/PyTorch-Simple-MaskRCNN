@@ -115,6 +115,7 @@ class RoIHeads(nn.Module):
         if self.training:
             proposal, matched_idx, label, regression_target = self.select_training_samples(proposal, target)
         
+        # roi align
         box_feature = self.box_roi_pool(feature, proposal, image_shape)
         class_logit, box_regression = self.box_predictor(box_feature)
         

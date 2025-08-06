@@ -17,11 +17,11 @@ def main(args):
         
     # ---------------------- prepare data loader ------------------------------- #
     
-    dataset_train = pmr.datasets(args.dataset, args.data_dir, "train2017", train=True)
+    dataset_train = pmr.datasets(args.dataset, args.data_dir, "train", train=True)
     indices = torch.randperm(len(dataset_train)).tolist()
     d_train = torch.utils.data.Subset(dataset_train, indices)
     
-    d_test = pmr.datasets(args.dataset, args.data_dir, "val2017", train=True) # set train=True for eval
+    d_test = pmr.datasets(args.dataset, args.data_dir, "val", train=True) # set train=True for eval
         
     args.warmup_iters = max(1000, len(d_train))
     
@@ -94,10 +94,10 @@ def main(args):
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--use-cuda", action="store_true")
+    parser.add_argument("--use-cuda", default=True)
     
-    parser.add_argument("--dataset", default="coco", help="coco or voc")
-    parser.add_argument("--data-dir", default="E:/PyTorch/data/coco2017")
+    parser.add_argument("--dataset", default="voc", help="coco or voc")
+    parser.add_argument("--data-dir", default="voc/VOCdevkit/VOC2012")
     parser.add_argument("--ckpt-path")
     parser.add_argument("--results")
     
@@ -115,7 +115,7 @@ if __name__ == "__main__":
     if args.lr is None:
         args.lr = 0.02 * 1 / 16 # lr should be 'batch_size / 16 * 0.02'
     if args.ckpt_path is None:
-        args.ckpt_path = "./maskrcnn_{}.pth".format(args.dataset)
+        args.ckpt_path = "checkpoints/maskrcnn_{}.pth".format(args.dataset)
     if args.results is None:
         args.results = os.path.join(os.path.dirname(args.ckpt_path), "maskrcnn_results.pth")
     
